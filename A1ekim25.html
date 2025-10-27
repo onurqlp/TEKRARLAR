@@ -14,22 +14,27 @@
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Inter,Arial,sans-serif}
     .container{max-width:1140px;margin-inline:auto;padding:18px}
-    header{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--border);z-index:10}
+
+    /* Üst çubuk+butonlar: TAMAMEN SABİT */
+    header{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--border);z-index:20}
     .nav{display:flex;align-items:center;gap:12px;padding:12px 18px}
     .logo{width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:var(--ayda);color:#fff;font-weight:800;box-shadow:var(--shadow)}
     .title{font-weight:800}
     .subtitle{font-size:.92rem;color:var(--muted)}
 
+    /* Sabit eylem butonları */
+    .actions{display:flex;gap:10px;flex-wrap:wrap;padding:10px 18px;border-top:1px solid var(--border)}
+    .btn{appearance:none;border:1px solid var(--ayda);background:var(--ayda);color:#fff;padding:10px 12px;border-radius:12px;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#fff;color:var(--ayda)}
+    .btn.small{font-size:.9rem;padding:8px 10px;border-radius:10px}
+    .btn:focus{outline:none;box-shadow:0 0 0 6px var(--ring)}
+    .btn[aria-expanded="true"]{outline:3px solid var(--ring)}
+
+    /* Kartlar */
     .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
     .head{padding:18px 18px 6px 18px}
     .body{padding:0 18px 18px 18px}
     .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(35,64,120,.06);color:var(--ayda);font-weight:700;font-size:.93rem}
-
-    .toolbar{display:flex;flex-wrap:wrap;gap:10px;padding:12px 18px}
-    .btn{appearance:none;border:1px solid var(--ayda);background:var(--ayda);color:#fff;padding:10px 12px;border-radius:12px;font-weight:700;cursor:pointer}
-    .btn.secondary{background:#fff;color:var(--ayda)}
-    .btn:focus{outline:none;box-shadow:0 0 0 6px var(--ring)}
-    .btn[aria-expanded="true"]{outline:3px solid var(--ring)}
 
     .player{position:relative;display:block;width:100%;aspect-ratio:16/9;border-bottom-left-radius:var(--radius);border-bottom-right-radius:var(--radius);overflow:hidden}
     .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -45,6 +50,9 @@
 
     /* Gizle/Göster */
     .is-hidden{display:none}
+
+    /* İçeriğin üstteki sabit alana çarpmaması için boşluk */
+    main{padding-top:10px}
   </style>
 </head>
 <body>
@@ -56,17 +64,16 @@
         <div class="subtitle">Grup: A1ekim25 · Hazal Hoca</div>
       </div>
     </div>
+    <!-- Sabit Butonlar -->
+    <div class="actions container" role="toolbar" aria-label="Hızlı Erişim">
+      <button class="btn" id="btnReplay" aria-controls="dersListesi" aria-expanded="false">Canlı Ders Tekrarları</button>
+      <button class="btn secondary" id="btnExtras" aria-controls="ekVideolar" aria-expanded="false">Ek Videolar & Materyaller</button>
+      <button class="btn secondary" id="btnOther" aria-controls="digerBaglantilar" aria-expanded="false">Diğer Bağlantılar</button>
+      <button class="btn small secondary" id="btnCloseAll" title="Açık bölümleri kapat">Tümünü Kapat</button>
+    </div>
   </header>
 
   <main class="container">
-    <!-- Üstte: 3 buton -->
-    <section class="card" aria-label="Hızlı Erişim">
-      <div class="toolbar">
-        <button class="btn" id="btnReplay" aria-controls="dersListesi" aria-expanded="false">Canlı Ders Tekrarları</button>
-        <button class="btn secondary" id="btnExtras" aria-controls="ekVideolar" aria-expanded="false">Ek Videolar & Materyaller</button>
-        <button class="btn secondary" id="btnOther" aria-controls="digerBaglantilar" aria-expanded="false">Diğer Bağlantılar</button>
-      </div>
-    </section>
 
     <!-- 1) Canlı Ders Tekrarları -->
     <section class="card is-hidden" aria-label="Ders Listesi" id="dersListesi">
@@ -78,7 +85,12 @@
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen></iframe>
       </div>
-      <div class="body"><p class="subtitle">Listeye yeni video eklendiğinde burada otomatik görünür.</p></div>
+      <div class="body">
+        <p class="subtitle">Listeye yeni video eklendiğinde burada otomatik görünür.</p>
+        <div class="btns">
+          <a class="btn secondary" target="_blank" rel="noopener" href="https://www.youtube.com/playlist?list=PLQwhOGFlptnKXysnY-DNosAk3w0-VW13l">Tüm Canlı Dersler (YouTube)</a>
+        </div>
+      </div>
     </section>
 
     <!-- 2) Ek Videolar & Materyaller -->
@@ -318,18 +330,57 @@
   <script>
     document.getElementById('y').textContent=new Date().getFullYear();
 
+    const sections = [
+      {btn:'btnReplay', id:'dersListesi'},
+      {btn:'btnExtras', id:'ekVideolar'},
+      {btn:'btnOther',  id:'digerBaglantilar'}
+    ];
+
+    // Durumu kaydet/geri yükle
+    const KEY='a1ekim25_openSections';
+    function saveState(){
+      const open = sections.filter(s=>!document.getElementById(s.id).classList.contains('is-hidden')).map(s=>s.id);
+      localStorage.setItem(KEY, JSON.stringify(open));
+    }
+    function restoreState(){
+      const raw = localStorage.getItem(KEY);
+      if(!raw) return;
+      try{
+        const openIds = JSON.parse(raw);
+        sections.forEach(s=>{
+          const el=document.getElementById(s.id);
+          const btn=document.getElementById(s.btn);
+          const willOpen = openIds.includes(s.id);
+          el.classList.toggle('is-hidden', !willOpen);
+          btn.setAttribute('aria-expanded', willOpen? 'true':'false');
+        });
+      }catch{}
+    }
+
     function toggleSection(btnId, sectionId){
       const btn = document.getElementById(btnId);
-      const el = document.getElementById(sectionId);
+      const el  = document.getElementById(sectionId);
       const willOpen = el.classList.contains('is-hidden');
       el.classList.toggle('is-hidden');
       btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
       if (willOpen) el.scrollIntoView({behavior:'smooth', block:'start'});
+      saveState();
     }
 
-    document.getElementById('btnReplay').addEventListener('click',()=>toggleSection('btnReplay','dersListesi'));
-    document.getElementById('btnExtras').addEventListener('click',()=>toggleSection('btnExtras','ekVideolar'));
-    document.getElementById('btnOther').addEventListener('click',()=>toggleSection('btnOther','digerBaglantilar'));
+    sections.forEach(s=>{
+      document.getElementById(s.btn).addEventListener('click',()=>toggleSection(s.btn,s.id));
+    });
+
+    document.getElementById('btnCloseAll').addEventListener('click',()=>{
+      sections.forEach(s=>{
+        document.getElementById(s.id).classList.add('is-hidden');
+        document.getElementById(s.btn).setAttribute('aria-expanded','false');
+      });
+      saveState();
+    });
+
+    // İlk yüklemede son durumu getir
+    restoreState();
   </script>
 </body>
 </html>
