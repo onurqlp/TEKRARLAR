@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AYDA Online Eğitim Platformu</title>
+  <meta name="description" content="AYDA Ankara Yabancı Dil Akademisi — Online Eğitim Platformu. Playlist sağda (mobilde altta) açılır.">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#234078">
+  <style>
+    :root{
+      --ayda:#234078;            /* AYDA koyu mavi */
+      --bg:#f7f9fc;              /* açık arka plan */
+      --ink:#1d2433;             /* metin */
+      --muted:#5b667a;           /* ikincil metin */
+      --card:#ffffff;            /* kart zemin */
+      --border:rgba(35,64,120,.10);
+      --ring:rgba(35,64,120,.16);
+      --radius:18px;             /* büyük köşe */
+      --shadow:0 10px 28px rgba(0,0,0,.06);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Inter,Arial,sans-serif}
+    a{color:var(--ayda);text-decoration:none}
+    .container{max-width:1140px;margin-inline:auto;padding:18px}
+
+    /* Üst bar */
+    header{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--border);z-index:10}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:var(--ayda);color:#fff;font-weight:800;box-shadow:var(--shadow)}
+    .title{font-weight:800;letter-spacing:.2px}
+    .subtitle{font-size:.92rem;color:var(--muted)}
+
+    /* Sayfa yerleşimi */
+    .layout{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
+    @media (min-width: 960px){
+      .layout.open{grid-template-columns:1fr 1.25fr}
+    }
+
+    /* Kart & buton */
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
+    .card .head{padding:18px 18px 6px 18px}
+    .card .body{padding:0 18px 18px 18px}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(35,64,120,.06);color:var(--ayda);font-weight:700;font-size:.93rem}
+    .muted{color:var(--muted)}
+    .btn{appearance:none;background:var(--ayda);color:#fff;border:1px solid var(--ayda);padding:11px 14px;border-radius:12px;font-weight:700;cursor:pointer}
+    .btn:focus{outline:none;box-shadow:0 0 0 6px var(--ring)}
+
+    /* Player paneli */
+    .player-card[hidden]{display:none !important}
+    .player{position:relative;display:block;width:100%;aspect-ratio:16/9;border-bottom-left-radius:var(--radius);border-bottom-right-radius:var(--radius);overflow:hidden}
+    .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+    footer{color:var(--muted);font-size:.9rem;padding:26px 18px}
+    @media (max-width:560px){.subtitle{display:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">A</div>
+        <div>
+          <div class="title">AYDA Online Eğitim Platformu</div>
+          <div class="subtitle">Ankara Yabancı Dil Akademisi · Kurumsal, hafif ve uyumlu arayüz</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="layout" class="layout" aria-live="polite">
+      <!-- Sol panel: Bilgi ve açma butonu -->
+      <section class="card" aria-label="Grup Bilgisi">
+        <div class="head">
+          <span class="badge">EKİM A1 – HAZAL HOCA (S‑P)</span>
+        </div>
+        <div class="body">
+          <p class="muted">Ders videoları kurumsal görünümle oynatma listesi üzerinden izlenir. Öğrenci tarafından değiştirilemez.</p>
+          <button id="toggle" class="btn" type="button" aria-expanded="false" aria-controls="playerCard">Online dersleri aç</button>
+        </div>
+      </section>
+
+      <!-- Sağ panel (mobilde altta): Player -->
+      <section id="playerCard" class="card player-card" aria-label="Ders Oynatıcı" hidden>
+        <div class="head" style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+          <div class="muted">YouTube playlist (youtube.com/embed)</div>
+          <button id="toggle2" class="btn" type="button" aria-expanded="true" aria-controls="playerCard">Kapat</button>
+        </div>
+        <div class="player">
+          <iframe
+            src="https://www.youtube.com/embed/videoseries?list=PLQwhOGFlptnKXysnY-DNosAk3w0-VW13l&rel=0&modestbranding=1"
+            title="AYDA Ders Listesi"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="container">
+    © <span id="y"></span> AYDA Ankara Yabancı Dil Akademisi
+  </footer>
+
+  <script>
+    (function(){
+      const y = document.getElementById('y'); y.textContent = new Date().getFullYear();
+      const layout = document.getElementById('layout');
+      const playerCard = document.getElementById('playerCard');
+      const toggle = document.getElementById('toggle');
+      const toggle2 = document.getElementById('toggle2');
+
+      function openPlayer(){
+        playerCard.hidden = false;
+        layout.classList.add('open');
+        toggle.setAttribute('aria-expanded','true');
+        toggle.textContent = 'Online dersleri gizle';
+      }
+      function closePlayer(){
+        playerCard.hidden = true;
+        layout.classList.remove('open');
+        toggle.setAttribute('aria-expanded','false');
+        toggle.textContent = 'Online dersleri aç';
+      }
+
+      toggle.addEventListener('click', ()=>{
+        if(playerCard.hidden) openPlayer(); else closePlayer();
+      });
+      toggle2.addEventListener('click', closePlayer);
+    })();
+  </script>
+</body>
+</html>
