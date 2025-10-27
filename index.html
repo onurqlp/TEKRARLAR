@@ -9,7 +9,8 @@
   <style>
     :root{
       --ayda:#234078; --bg:#f7f9fc; --ink:#1d2433; --muted:#5b667a; --card:#ffffff;
-      --border:rgba(35,64,120,.12); --ring:rgba(35,64,120,.18); --radius:18px; --shadow:0 10px 28px rgba(0,0,0,.06);
+      --border:rgba(35,64,120,.12); --ring:rgba(35,64,120,.18);
+      --radius:18px; --shadow:0 10px 28px rgba(0,0,0,.06);
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Inter,Arial,sans-serif}
@@ -22,17 +23,23 @@
     .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);padding:18px}
     .field{display:flex;flex-direction:column;gap:6px;margin:10px 0}
     label{font-weight:700;font-size:.95rem}
-    input{padding:12px 12px;border:1px solid var(--border);border-radius:12px;font-size:1rem;background:#fff}
+    input{padding:12px;border:1px solid var(--border);border-radius:12px;font-size:1rem;background:#fff}
     input:focus{outline:none;box-shadow:0 0 0 6px var(--ring)}
-    .btn{appearance:none;background:var(--ayda);color:#fff;border:1px solid var(--ayda);
-         padding:12px 14px;border-radius:12px;font-weight:800;width:100%;cursor:pointer;margin-top:12px}
+    .btn{appearance:none;background:var(--ayda);color:#fff;border:1px solid var(--ayda);padding:12px 14px;border-radius:12px;font-weight:800;width:100%;cursor:pointer;margin-top:12px}
     .help{color:var(--muted);font-size:.9rem;margin-top:10px}
     .error{color:#9b1c1c;background:#fde8e8;border:1px solid #f7c2c2;padding:10px;border-radius:12px;display:none;margin-top:10px}
     .spacer{height:20px}
     footer{color:var(--muted);font-size:.9rem;text-align:center;margin:22px 0}
+    .hint{font-size:.85rem;color:#4a5568;margin-top:6px}
   </style>
 </head>
 <body>
+  <noscript>
+    <div style="max-width:640px;margin:16px auto;background:#fde8e8;border:1px solid #f7c2c2;padding:12px;border-radius:12px;color:#9b1c1c">
+      Bu sayfa JavaScript gerektirir. Lütfen tarayıcınızda JavaScript'i etkinleştirin.
+    </div>
+  </noscript>
+
   <div class="container">
     <header>
       <div class="brand">
@@ -53,11 +60,12 @@
           </div>
           <div class="field">
             <label for="klass">Sınıf kodu</label>
-            <input id="klass" name="klass" placeholder="ör. A1ekim25" autocomplete="off" required>
+            <input id="klass" name="klass" placeholder="ör. A1ekim25 veya A1ekim25.html" autocomplete="off" required>
+            <div class="hint">Not: <code>.html</code> yazsanız da yazmasanız da çalışır.</div>
           </div>
           <button class="btn" type="submit">Giriş Yap</button>
           <div id="err" class="error" role="alert">Kodlar eşleşmedi. Lütfen kontrol edin.</div>
-          <div class="help">Doğru girişte sadece yetkili olduğunuz sınıfa yönlendirilirsiniz.</div>
+          <div class="help">Doğru girişte yalnızca yetkili olduğunuz sınıfa yönlendirilirsiniz.</div>
         </form>
       </section>
 
@@ -65,9 +73,9 @@
 
       <section class="card" aria-label="Yönetici Notu">
         <div class="help">
-          <strong>// 🔹 KULLANICILAR VE GRUPLARI</strong> kısmına kullanıcı–sınıf eşleşmelerini ekleyin.<br>
-          <strong>// 🔹 SINIFLAR BÖLÜMÜ</strong> kısmında sınıf adlarını HTML dosyalarına bağlayın.<br><br>
-          Örnek: <code>users['onur'] = ['a1ekim25','a2ekim25']</code>
+          <strong>// 🔹 KULLANICILAR VE GRUPLARI:</strong> Kullanıcı—sınıf eşleşmeleri.<br>
+          <strong>// 🔹 SINIFLAR:</strong> Sınıf kodunu hedef HTML dosyasına bağlama.<br>
+          Yeni sınıf için iki yere ek yapın: <code>USER_GROUPS</code> ve <code>CLASS_MAP</code>.
         </div>
       </section>
     </main>
@@ -76,52 +84,82 @@
   </div>
 
   <script>
-    (function(){
-      const YEAR = document.getElementById('y');
-      YEAR.textContent = new Date().getFullYear();
+  document.addEventListener('DOMContentLoaded', () => {
+    const YEAR = document.getElementById('y'); if (YEAR) YEAR.textContent = new Date().getFullYear();
+    const FORM = document.getElementById('loginForm');
+    const USER = document.getElementById('user');
+    const KLASS = document.getElementById('klass');
+    const ERR  = document.getElementById('err');
 
-      const FORM = document.getElementById('loginForm');
-      const USER = document.getElementById('user');
-      const KLASS = document.getElementById('klass');
-      const ERR = document.getElementById('err');
+    // ==========================
+    // 🔹 KULLANICILAR VE GRUPLARI
+    // ==========================
+    const USER_GROUPS = {
+      onur: ['a1ekim25','a2ekim25','b1ekim25'],
+      elif: ['b2ekim25','a2kasim25'],
+      ali:  ['a1kasim25','b1kasim25','b2kasim25'],
+      veli: ['a1aralik25','b1aralik25']
+    };
 
-      // 🔹 KULLANICILAR VE GRUPLARI
-      const USER_GROUPS = {
-        onur: ['a1ekim25', 'a2ekim25', 'b1ekim25'],
-        elif: ['b2ekim25', 'a2kasim25'],
-        ali: ['a1kasim25', 'b1kasim25', 'b2kasim25'],
-        veli: ['a1aralik25', 'b1aralik25']
-      };
+    // ==========================
+    // 🔹 SINIFLAR (kod -> dosya)
+    // ==========================
+    const CLASS_MAP = new Map([
+      ['a1ekim25','A1ekim25.html'],
+      ['a2ekim25','A2ekim25.html'],
+      ['b1ekim25','B1ekim25.html'],
+      ['b2ekim25','B2ekim25.html'],
+      ['a1kasim25','A1kasim25.html'],
+      ['a2kasim25','A2kasim25.html'],
+      ['b1kasim25','B1kasim25.html'],
+      ['b2kasim25','B2kasim25.html'],
+      ['a1aralik25','A1aralik25.html'],
+      ['b1aralik25','B1aralik25.html']
+    ]);
 
-      // 🔹 SINIFLAR BÖLÜMÜ
-      const CLASS_MAP = new Map([
-        ['a1ekim25', 'A1ekim25.html'],
-        ['a2ekim25', 'A2ekim25.html'],
-        ['b1ekim25', 'B1ekim25.html'],
-        ['b2ekim25', 'B2ekim25.html'],
-        ['a1kasim25', 'A1kasim25.html'],
-        ['a2kasim25', 'A2kasim25.html'],
-        ['b1kasim25', 'B1kasim25.html'],
-        ['b2kasim25', 'B2kasim25.html'],
-        ['a1aralik25', 'A1aralik25.html'],
-        ['b1aralik25', 'B1aralik25.html']
-      ]);
+    // Sınıf metnini normalize et: trim, lowercase, varsa .html'i kaldır
+    const normClass = (input) => (input || '').trim().toLowerCase().replace(/\.html?$/i,'');
 
-      FORM.addEventListener('submit', function(e){
+    const showError = (msg) => {
+      if (!ERR) return;
+      ERR.textContent = msg || 'Kodlar eşleşmedi. Lütfen kontrol edin.';
+      ERR.style.display = 'block';
+    };
+
+    // Hedef dosya gerçekten var mı kontrolü (aynı origin olduğu için uygun)
+    const fileExists = async (path) => {
+      try {
+        const res = await fetch(path, { method: 'HEAD', cache: 'no-store' });
+        return res.ok;
+      } catch { return false; }
+    };
+
+    if (FORM) {
+      FORM.addEventListener('submit', async (e) => {
         e.preventDefault();
-        ERR.style.display = 'none';
-        const u = (USER.value || '').trim().toLowerCase();
-        const kraw = (KLASS.value || '').trim();
-        const kkey = kraw.toLowerCase();
+        if (ERR) ERR.style.display = 'none';
 
-        if(!USER_GROUPS[u]) { ERR.style.display='block'; return; }       // kullanıcı yok
-        if(!CLASS_MAP.has(kkey)) { ERR.style.display='block'; return; }  // sınıf yok
-        if(!USER_GROUPS[u].includes(kkey)) { ERR.style.display='block'; return; } // kullanıcı o sınıfta değil
+        const u = (USER.value || '').trim().toLowerCase();
+        const kkey = normClass(KLASS.value);
+
+        if (!USER_GROUPS[u]) { showError('Kullanıcı bulunamadı.'); return; }
+        if (!CLASS_MAP.has(kkey)) { showError('Sınıf kodu bulunamadı.'); return; }
+        if (!USER_GROUPS[u].includes(kkey)) { showError('Bu sınıf için yetkiniz yok.'); return; }
 
         const target = CLASS_MAP.get(kkey);
-        window.location.href = target; // yönlendirme
+        const ok = await fileExists(target);
+        if (!ok) { showError('Hedef sayfa bulunamadı: ' + target); return; }
+
+        try {
+          // GitHub Pages uyumlu yönlendirme
+          window.location.assign(target);
+        } catch (err) {
+          console.error(err);
+          showError('Yönlendirme başarısız oldu.');
+        }
       });
-    })();
+    }
+  });
   </script>
 </body>
 </html>
