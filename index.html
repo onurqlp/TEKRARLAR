@@ -79,12 +79,13 @@
       const KLASS = document.getElementById('klass');
       const ERR = document.getElementById('err');
 
-      // Yetkili kullanıcı ve sınıf (gerekirse çoğaltabilirsiniz)
-      const VALID_USER = 'onur1025';
-      const CLASS_MAP = new Map([
-        // lowerCase -> canonical filename (case-sensitive hedef)
-        ['a1ekim25','A1ekim25.html']
-      ]);
+     // Yetkili kullanıcı ve sınıf (gerekirse çoğaltabilirsiniz)
+const VALID_USERS = ['onur1025', 'elif1025'];
+const CLASS_MAP = new Map([
+  // lowerCase -> canonical filename (case-sensitive hedef)
+  ['a1ekim25', 'A1ekim25.html']
+]);
+
 
       FORM.addEventListener('submit', function(e){
         e.preventDefault();
