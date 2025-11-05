@@ -3,163 +3,154 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AYDA Online Eğitim — Giriş</title>
+  <title>AYDA · Sınıf Giriş & Ders Tekrarları</title>
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#234078">
   <style>
     :root{
-      --ayda:#234078; --bg:#f7f9fc; --ink:#1d2433; --muted:#5b667a; --card:#ffffff;
-      --border:rgba(35,64,120,.12); --ring:rgba(35,64,120,.18);
-      --radius:18px; --shadow:0 10px 28px rgba(0,0,0,.06);
+      --ayda:#234078; --bg:#f7f9fc; --ink:#1d2433; --muted:#5b667a; --card:#fff; --border:rgba(35,64,120,.12);
+      --radius:18px; --shadow:0 12px 30px rgba(0,0,0,.06); --ring:rgba(35,64,120,.18);
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Inter,Arial,sans-serif}
-    .container{max-width:460px;margin:0 auto;padding:24px}
-    header{padding:18px 0}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:var(--ayda);color:#fff;font-weight:800;box-shadow:var(--shadow)}
-    .title{font-weight:800}
-    .subtitle{color:var(--muted);font-size:.95rem}
-    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);padding:18px}
-    .field{display:flex;flex-direction:column;gap:6px;margin:10px 0}
-    label{font-weight:700;font-size:.95rem}
-    input{padding:12px;border:1px solid var(--border);border-radius:12px;font-size:1rem;background:#fff}
-    input:focus{outline:none;box-shadow:0 0 0 6px var(--ring)}
-    .btn{appearance:none;background:var(--ayda);color:#fff;border:1px solid var(--ayda);padding:12px 14px;border-radius:12px;font-weight:800;width:100%;cursor:pointer;margin-top:12px}
-    .help{color:var(--muted);font-size:.9rem;margin-top:10px}
-    .error{color:#9b1c1c;background:#fde8e8;border:1px solid #f7c2c2;padding:10px;border-radius:12px;display:none;margin-top:10px}
-    .spacer{height:20px}
-    footer{color:var(--muted);font-size:.9rem;text-align:center;margin:22px 0}
-    .hint{font-size:.85rem;color:#4a5568;margin-top:6px}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    .wrap{min-height:100dvh;display:grid;place-items:center;padding:24px}
+    .card{width:100%;max-width:720px;background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow);border-radius:var(--radius);padding:28px}
+    h1{margin:0 0 8px;font-size:clamp(20px,2.6vw,28px)}
+    p.sub{margin:0 0 18px;color:var(--muted)}
+    label{display:block;margin:12px 0 6px;font-weight:600}
+    .row{display:flex;gap:10px}
+    input[type=text]{flex:1;border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:16px;outline:none}
+    input[type=text]:focus{border-color:var(--ayda);box-shadow:0 0 0 6px var(--ring)}
+    button{background:var(--ayda);color:#fff;border:0;border-radius:12px;padding:14px 18px;font-weight:700;cursor:pointer}
+    button:active{transform:translateY(1px)}
+    .hint{margin-top:8px;color:var(--muted);font-size:14px}
+    .err{margin-top:10px;color:#b00020;font-weight:600}
+    header{display:flex;gap:12px;align-items:center;padding:14px 18px;background:#fff;border-bottom:1px solid var(--border)}
+    a.back{color:#fff;background:var(--ayda);padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:700}
+    .section{max-width:1100px;margin:24px auto;padding:0 16px}
+    iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:12px}
+    .btn{display:inline-block;background:var(--ayda);color:#fff;text-decoration:none;padding:12px 16px;border-radius:12px;font-weight:700}
+    .rowwrap{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+    .logo{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .logo-badge{width:36px;height:36px;border-radius:10px;background:var(--ayda)}
   </style>
 </head>
 <body>
-  <noscript>
-    <div style="max-width:640px;margin:16px auto;background:#fde8e8;border:1px solid #f7c2c2;padding:12px;border-radius:12px;color:#9b1c1c">
-      Bu sayfa JavaScript gerektirir. Lütfen tarayıcınızda JavaScript'i etkinleştirin.
-    </div>
-  </noscript>
 
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true">A</div>
-        <div>
-          <div class="title">AYDA Online Eğitim Platformu</div>
-          <div class="subtitle">Giriş</div>
-        </div>
+  <!-- Giriş -->
+  <main id="login" class="wrap">
+    <section class="card" role="form" aria-labelledby="title">
+      <div class="logo"><div class="logo-badge"></div><strong>AYDA Online Eğitim</strong></div>
+      <h1 id="title">Lütfen sınıf kodunu giriniz</h1>
+      <p class="sub">Örn: <code>B1Eylül22</code> · <code>A2Şubat24</code></p>
+
+      <label for="code">Sınıf kodu</label>
+      <div class="row">
+        <input id="code" type="text" inputmode="latin" placeholder="Örn: A1Kasım25" autocomplete="off" aria-describedby="hint">
+        <button id="go" type="button">Giriş</button>
       </div>
+      <div id="hint" class="hint">Büyük/küçük harf duyarsızdır. Türkçe karakterler otomatik uyarlanır.</div>
+      <div id="err" class="err" hidden>Geçersiz kod. Örnekler: B1Eylül22, A2Şubat24</div>
+    </section>
+  </main>
+
+  <!-- Ders Tekrarları -->
+  <section id="class" hidden>
+    <header>
+      <a class="back" href="#" id="change">← Kodu Değiştir</a>
+      <strong id="head">AYDA · Sınıf</strong>
     </header>
 
-    <main>
-      <section class="card" aria-label="Giriş Formu">
-        <form id="loginForm" novalidate>
-          <div class="field">
-            <label for="user">Kullanıcı kodu</label>
-            <input id="user" name="user" placeholder="ör. onur" autocomplete="username" required>
-          </div>
-          <div class="field">
-            <label for="klass">Sınıf kodu</label>
-            <input id="klass" name="klass" placeholder="ör. A1ekim25 veya A1ekim25.html" autocomplete="off" required>
-            <div class="hint">Not: <code>.html</code> yazsanız da yazmasanız da çalışır.</div>
-          </div>
-          <button class="btn" type="submit">Giriş Yap</button>
-          <div id="err" class="error" role="alert">Kodlar eşleşmedi. Lütfen kontrol edin.</div>
-          <div class="help">Doğru girişte yalnızca yetkili olduğunuz sınıfa yönlendirilirsiniz.</div>
-        </form>
-      </section>
+    <main class="section">
+      <h1 id="titleClass">Ders Tekrarları</h1>
+      <p class="sub" id="desc">Seçtiğiniz sınıf için YouTube ders listesi aşağıdadır.</p>
 
-      <div class="spacer"></div>
+      <section class="card">
+        <iframe id="yt" title="Ders Listesi"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
 
-      <section class="card" aria-label="Yönetici Notu">
-        <div class="help">
-          <strong>// 🔹 KULLANICILAR VE GRUPLARI:</strong> Kullanıcı—sınıf eşleşmeleri.<br>
-          <strong>// 🔹 SINIFLAR:</strong> Sınıf kodunu hedef HTML dosyasına bağlama.<br>
-          Yeni sınıf için iki yere ek yapın: <code>USER_GROUPS</code> ve <code>CLASS_MAP</code>.
+        <div class="rowwrap">
+          <a class="btn" id="allBtn" target="_blank" rel="noopener">Tüm derslere git (YouTube)</a>
         </div>
+
+        <p class="hint">Video açılmazsa yukarıdaki butonla YouTube listesine giderek dersi seçebilirsiniz.</p>
       </section>
     </main>
-
-    <footer>© <span id="y"></span> AYDA Ankara Yabancı Dil Akademisi</footer>
-  </div>
+  </section>
 
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const YEAR = document.getElementById('y'); if (YEAR) YEAR.textContent = new Date().getFullYear();
-    const FORM = document.getElementById('loginForm');
-    const USER = document.getElementById('user');
-    const KLASS = document.getElementById('klass');
-    const ERR  = document.getElementById('err');
+    // TR karakter katlaması + case-insensitive
+    const trFold = s => s.toLocaleLowerCase('tr-TR')
+      .replace(/ı/g,'i').replace(/ö/g,'o').replace(/ü/g,'u')
+      .replace(/ş/g,'s').replace(/ç/g,'c').replace(/ğ/g,'g');
 
-    // ==========================
-    // 🔹 KULLANICILAR VE GRUPLARI
-    // ==========================
-    const USER_GROUPS = {
-      onur: ['a1ekim25','a2ekim25','b1ekim25'],
-      elif: ['b2ekim25','a2kasim25'],
-      ali:  ['a1kasim25','b1kasim25','b2kasim25'],
-      veli: ['a1aralik25','b1aralik25']
+    // Sınıf tabloları — yeni sınıf eklemek için bu objeye 1 satır ekle
+    const classes = {
+      'a1kasim25': {
+        name: 'A1 Kasım 2025',
+        playlistId: 'UU_x5XG1OV2P6uZZ5FSM9Ttw',
+        playlistUrl: 'https://www.youtube.com/playlist?list=UU_x5XG1OV2P6uZZ5FSM9Ttw'
+      },
+      'a2kasim25': {
+        name: 'A2 Kasım 2025',
+        playlistId: 'PL-osiE80TeTs4UjLw5MM6OjgkjFeUxCYH',
+        playlistUrl: 'https://www.youtube.com/playlist?list=PL-osiE80TeTs4UjLw5MM6OjgkjFeUxCYH'
+      }
+      // örnek: 'b1aralik25': { name:'B1 Aralık 2025', playlistId:'XXXX', playlistUrl:'https://www.youtube.com/playlist?list=XXXX' }
     };
 
-    // ==========================
-    // 🔹 SINIFLAR (kod -> dosya)
-    // ==========================
-    const CLASS_MAP = new Map([
-      ['a1ekim25','A1ekim25.html'],
-      ['a2ekim25','A2ekim25.html'],
-      ['b1ekim25','B1ekim25.html'],
-      ['b2ekim25','B2ekim25.html'],
-      ['a1kasim25','A1kasim25.html'],
-      ['a2kasim25','A2kasim25.html'],
-      ['b1kasim25','B1kasim25.html'],
-      ['b2kasim25','B2kasim25.html'],
-      ['a1aralik25','A1aralik25.html'],
-      ['b1aralik25','B1aralik25.html']
-    ]);
+    const $ = id => document.getElementById(id);
+    const login = $('login'), klass = $('class');
+    const codeInput = $('code'), goBtn = $('go'), err = $('err');
+    const change = $('change'), head = $('head'), yt = $('yt'), allBtn = $('allBtn'), titleClass = $('titleClass'), desc = $('desc');
 
-    // Sınıf metnini normalize et: trim, lowercase, varsa .html'i kaldır
-    const normClass = (input) => (input || '').trim().toLowerCase().replace(/\.html?$/i,'');
+    function renderClass(key, rawDisplay) {
+      const c = classes[key];
+      if(!c){ err.hidden = false; return; }
 
-    const showError = (msg) => {
-      if (!ERR) return;
-      ERR.textContent = msg || 'Kodlar eşleşmedi. Lütfen kontrol edin.';
-      ERR.style.display = 'block';
-    };
+      // içerik doldur
+      head.textContent = `AYDA · ${c.name}`;
+      titleClass.textContent = 'Ders Tekrarları';
+      desc.textContent = `${c.name} için YouTube ders listesi.`;
+      yt.src = `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(c.playlistId)}`;
+      allBtn.href = c.playlistUrl;
 
-    // Hedef dosya gerçekten var mı kontrolü (aynı origin olduğu için uygun)
-    const fileExists = async (path) => {
-      try {
-        const res = await fetch(path, { method: 'HEAD', cache: 'no-store' });
-        return res.ok;
-      } catch { return false; }
-    };
+      // görünürlük
+      login.hidden = true;
+      klass.hidden = false;
 
-    if (FORM) {
-      FORM.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (ERR) ERR.style.display = 'none';
-
-        const u = (USER.value || '').trim().toLowerCase();
-        const kkey = normClass(KLASS.value);
-
-        if (!USER_GROUPS[u]) { showError('Kullanıcı bulunamadı.'); return; }
-        if (!CLASS_MAP.has(kkey)) { showError('Sınıf kodu bulunamadı.'); return; }
-        if (!USER_GROUPS[u].includes(kkey)) { showError('Bu sınıf için yetkiniz yok.'); return; }
-
-        const target = CLASS_MAP.get(kkey);
-        const ok = await fileExists(target);
-        if (!ok) { showError('Hedef sayfa bulunamadı: ' + target); return; }
-
-        try {
-          // GitHub Pages uyumlu yönlendirme
-          window.location.assign(target);
-        } catch (err) {
-          console.error(err);
-          showError('Yönlendirme başarısız oldu.');
-        }
-      });
+      // hatırla
+      localStorage.setItem('ayda:lastCode', rawDisplay || key);
+      yt.focus?.();
     }
-  });
+
+    function handleGo(){
+      const raw = (codeInput.value || '').trim();
+      const key = trFold(raw);
+      if (classes[key]) {
+        err.hidden = true;
+        renderClass(key, raw);
+      } else {
+        err.hidden = false;
+      }
+    }
+
+    // enter
+    codeInput.addEventListener('keydown', e => { if(e.key === 'Enter') handleGo(); });
+    goBtn.addEventListener('click', handleGo);
+
+    // kodu değiştir
+    change.addEventListener('click', e => {
+      e.preventDefault();
+      klass.hidden = true;
+      login.hidden = false;
+      codeInput.focus();
+    });
+
+    // otomatik devam (son kod)
+    const last = localStorage.getItem('ayda:lastCode');
+    if(last){ codeInput.value = last; handleGo(); }
   </script>
 </body>
 </html>
