@@ -4,54 +4,76 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AYDA · Sınıf Giriş & Ders Tekrarları</title>
-<meta name="color-scheme" content="light"><meta name="theme-color" content="#234078">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#234078">
 <style>
-  :root{--ayda:#234078;--bg:#f7f9fc;--ink:#1d2433;--muted:#5b667a;--card:#fff;--border:rgba(35,64,120,.12);
-        --radius:18px;--shadow:0 12px 30px rgba(0,0,0,.06);--ring:rgba(35,64,120,.18)}
-  *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  :root{
+    --ayda:#234078;--bg:#f7f9fc;--ink:#1d2433;--muted:#5b667a;
+    --card:#fff;--border:rgba(35,64,120,.12);
+    --radius:18px;--shadow:0 12px 30px rgba(0,0,0,.06);
+    --ring:rgba(35,64,120,.18)
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial}
   html{scroll-behavior:smooth}
   .wrap{min-height:100dvh;display:grid;place-items:center;padding:24px}
-  .card{width:100%;max-width:720px;background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow);border-radius:var(--radius);padding:28px}
-  h1{margin:0 0 8px;font-size:clamp(20px,2.6vw,28px)} .sub{margin:0 0 18px;color:var(--muted)}
+  .card{width:100%;max-width:720px;background:var(--card);
+    border:1px solid var(--border);box-shadow:var(--shadow);
+    border-radius:var(--radius);padding:28px}
+  h1{margin:0 0 8px;font-size:clamp(20px,2.6vw,28px)}
+  .sub{margin:0 0 18px;color:var(--muted)}
   label{display:block;margin:12px 0 6px;font-weight:600}
   .row{display:flex;gap:10px}
-  input[type=text]{flex:1;border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:16px;outline:none}
-  input[type=text]:focus{border-color:var(--ayda);box-shadow:0 0 0 6px var(--ring)}
-  button{background:var(--ayda);color:#fff;border:0;border-radius:12px;padding:14px 18px;font-weight:700;cursor:pointer}
+  input[type=text]{flex:1;border:1px solid var(--border);
+    border-radius:12px;padding:14px 16px;font-size:16px;outline:none}
+  input[type=text]:focus{border-color:var(--ayda);
+    box-shadow:0 0 0 6px var(--ring)}
+  button{background:var(--ayda);color:#fff;border:0;
+    border-radius:12px;padding:14px 18px;font-weight:700;cursor:pointer}
   button:active{transform:translateY(1px)}
   .hint{margin-top:8px;color:var(--muted);font-size:14px}
   .err{margin-top:10px;color:#b00020;font-weight:600}
-  header{display:flex;gap:12px;align-items:center;padding:14px 18px;background:#fff;border-bottom:1px solid var(--border)}
-  a.back{color:#fff;background:var(--ayda);padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:700}
+  header{display:flex;gap:12px;align-items:center;padding:14px 18px;
+    background:#fff;border-bottom:1px solid var(--border)}
+  a.back{color:#fff;background:var(--ayda);padding:8px 12px;
+    border-radius:10px;text-decoration:none;font-weight:700}
   .section{max-width:1100px;margin:24px auto;padding:0 16px}
   iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:12px}
-  .btn{display:inline-block;background:var(--ayda);color:#fff;text-decoration:none;padding:12px 16px;border-radius:12px;font-weight:700}
+  .btn{display:inline-block;background:var(--ayda);color:#fff;
+    text-decoration:none;padding:12px 16px;border-radius:12px;font-weight:700}
   .rowwrap{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
   .logo{display:flex;align-items:center;gap:10px;margin-bottom:8px}
   .logo-badge{width:36px;height:36px;border-radius:10px;background:var(--ayda)}
   #jumpBtn{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);
-           background:var(--ayda);color:#fff;border:0;border-radius:999px;padding:12px 16px;
-           box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;font-weight:800;z-index:60}
+    background:var(--ayda);color:#fff;border:0;border-radius:999px;
+    padding:12px 16px;box-shadow:var(--shadow);
+    display:flex;align-items:center;gap:10px;font-weight:800;z-index:60}
   #jumpBtn[hidden]{display:none}
-  .chev{font-size:18px;line-height:1}
+  .chev{font-size:18px;line-height:1;animation:bob 1.2s infinite}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
-  .chev{animation:bob 1.2s infinite}
 </style>
 </head>
+
 <body>
 
 <main id="login" class="wrap">
-  <section class="card" role="form" aria-labelledby="title">
-    <div class="logo"><div class="logo-badge"></div><strong>AYDA Online Eğitim</strong></div>
-    <h1 id="title">Lütfen sınıf kodunu giriniz</h1>
-    <p class="sub"> <code></code> · <code></code></p>
+  <section class="card">
+    <div class="logo">
+      <div class="logo-badge"></div>
+      <strong>AYDA Online Eğitim</strong>
+    </div>
+
+    <h1>Lütfen sınıf kodunu giriniz</h1>
+    <p class="sub">Size verilen sınıf kodunu yazınız</p>
 
     <label for="code">Sınıf kodu</label>
     <div class="row">
-      <input id="code" type="text" inputmode="latin" placeholder="" autocomplete="off" aria-describedby="hint">
-      <button id="go" type="button">Giriş</button>
+      <input id="code" type="text" autocomplete="off">
+      <button id="go">Giriş</button>
     </div>
-    <div id="hint" class="hint">.</div>
+
+    <div class="hint">Örnek: A1Aralik25241225</div>
     <div id="err" class="err" hidden>Geçersiz kod.</div>
   </section>
 </main>
@@ -64,29 +86,28 @@
 
   <main class="section">
     <h1 id="titleClass">Ders Tekrarları</h1>
-    <p class="sub" id="desc">Seçtiğiniz sınıf için YouTube ders listesi aşağıdadır.</p>
+    <p class="sub" id="desc"></p>
 
     <section class="card">
-      <iframe id="yt" title="Ders Listesi"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      <iframe id="yt"
+        allow="accelerometer; autoplay; clipboard-write;
+               encrypted-media; gyroscope; picture-in-picture; web-share"
         allowfullscreen></iframe>
 
       <div class="rowwrap">
-        <a class="btn" id="allBtn" target="_blank" rel="noopener">Tüm derslere git (YouTube)</a>
-
-        <!-- ✅ YENİ EKLENEN BUTON -->
-        <a class="btn" href="https://onurqlp.github.io/bibliothek/" 
-          target="_blank" rel="noopener">
-          Online Kütüphane (AYDA)
-        </a>
+        <a class="btn" id="allBtn" target="_blank">Tüm derslere git (YouTube)</a>
+        <a class="btn" href="https://onurqlp.github.io/bibliothek/"
+           target="_blank">Online Kütüphane (AYDA)</a>
       </div>
 
-      <p class="hint">Video açılmazsa yukarıdaki butonla YouTube listesine giderek dersi seçebilirsiniz.</p>
+      <p class="hint">
+        Video açılmazsa YouTube butonunu kullanabilirsiniz.
+      </p>
     </section>
   </main>
 </section>
 
-<button id="jumpBtn" hidden aria-label="Derse git"><span class="chev">↓</span> Derse git</button>
+<button id="jumpBtn" hidden><span class="chev">↓</span> Derse git</button>
 
 <script>
   const trFold = s => s.toLocaleLowerCase('tr-TR')
@@ -103,69 +124,57 @@
       name: 'A2 Kasım 2025',
       playlistId: 'PLQwhOGFlptnK2FkNjTa1ziOangyy_i50f',
       playlistUrl: 'https://www.youtube.com/playlist?list=PLQwhOGFlptnK2FkNjTa1ziOangyy_i50f'
+    },
+
+    /* ✅ YENİ SINIF */
+    '241225': {
+      name: 'A1 Aralık 2025',
+      playlistId: 'PLQwhOGFlptnLdkvcoYRt9N6Qbret9aikN',
+      playlistUrl: 'https://youtube.com/playlist?list=PLQwhOGFlptnLdkvcoYRt9N6Qbret9aikN'
     }
   };
 
   const $ = id => document.getElementById(id);
   const login = $('login'), klass = $('class');
-  const codeInput = $('code'), goBtn = $('go'), err = $('err');
-  const change = $('change'), head = $('head'), yt = $('yt'), allBtn = $('allBtn');
-  const titleClass = $('titleClass'), desc = $('desc'), jumpBtn = $('jumpBtn');
+  const codeInput = $('code'), err = $('err');
+  const head = $('head'), yt = $('yt'), allBtn = $('allBtn');
+  const desc = $('desc'), jumpBtn = $('jumpBtn');
 
-  function hardScrollTo(y){
-    window.scrollTo({top:y, behavior:'smooth'});
-    setTimeout(()=>window.scrollTo({top:y, behavior:'smooth'}),120);
-    setTimeout(()=>window.scrollTo(0,y),320);
-  }
   function scrollToClass(){
-    const y = klass.getBoundingClientRect().top + window.pageYOffset - 8;
-    location.hash = '#class';
-    hardScrollTo(y);
+    klass.scrollIntoView({behavior:'smooth'});
   }
 
-  function renderClass(key, rawDisplay) {
+  function renderClass(key){
     const c = classes[key];
     if(!c){ err.hidden = false; return; }
 
     head.textContent = `AYDA · ${c.name}`;
-    titleClass.textContent = 'Ders Tekrarları';
-    desc.textContent = `${c.name} için YouTube ders listesi.`;
-    yt.src = `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(c.playlistId)}`;
+    desc.textContent = `${c.name} için ders tekrarları`;
+    yt.src = `https://www.youtube.com/embed/videoseries?list=${c.playlistId}`;
     allBtn.href = c.playlistUrl;
 
     login.hidden = true;
     klass.hidden = false;
-
-    localStorage.setItem('ayda:lastCode', rawDisplay || key);
-
     jumpBtn.hidden = false;
     scrollToClass();
-    yt.focus?.();
   }
 
-  function handleGo(){
-    const raw = (codeInput.value || '').trim();
-    const key = trFold(raw);
-    if (classes[key]) { err.hidden = true; renderClass(key, raw); }
-    else { err.hidden = false; }
-  }
+  $('go').onclick = () => {
+    const key = trFold(codeInput.value.trim());
+    if(classes[key]){ err.hidden = true; renderClass(key); }
+    else{ err.hidden = false; }
+  };
 
-  codeInput.addEventListener('keydown', e => { if(e.key==='Enter') handleGo(); });
-  goBtn.addEventListener('click', handleGo);
-
-  change.addEventListener('click', e => {
+  $('change').onclick = e => {
     e.preventDefault();
-    klass.hidden = true; login.hidden = false; codeInput.focus();
-    location.hash = ''; window.scrollTo({top:0, behavior:'smooth'});
+    klass.hidden = true;
+    login.hidden = false;
     jumpBtn.hidden = true;
-  });
+    codeInput.focus();
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
 
-  jumpBtn.addEventListener('click', scrollToClass);
-
-  // --- OTOMATİK AÇMA YOK ---
-  // Sadece son kodu input'a yaz (kullanıcı yine de 'Giriş' basacak).
-  const last = localStorage.getItem('');
-  if(last){ codeInput.value = last; }
+  jumpBtn.onclick = scrollToClass;
 </script>
 
 </body>
