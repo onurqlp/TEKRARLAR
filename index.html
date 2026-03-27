@@ -1,243 +1,201 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AYDA · Sınıf Giriş & Ders Tekrarları</title>
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#234078">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sınav Giriş Belgesi</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <style>
-  :root{
-    --ayda:#234078;--bg:#f7f9fc;--ink:#1d2433;--muted:#5b667a;
-    --card:#fff;--border:rgba(35,64,120,.12);
-    --radius:18px;--shadow:0 12px 30px rgba(0,0,0,.06);
-    --ring:rgba(35,64,120,.18)
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
-    font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial}
-  html{scroll-behavior:smooth}
-  .wrap{min-height:100dvh;display:grid;place-items:center;padding:24px}
-  .card{width:100%;max-width:720px;background:var(--card);
-    border:1px solid var(--border);box-shadow:var(--shadow);
-    border-radius:var(--radius);padding:28px}
-  h1{margin:0 0 8px;font-size:clamp(20px,2.6vw,28px)}
-  .sub{margin:0 0 18px;color:var(--muted)}
-  label{display:block;margin:12px 0 6px;font-weight:600}
-  .row{display:flex;gap:10px}
-  input[type=text]{flex:1;border:1px solid var(--border);
-    border-radius:12px;padding:14px 16px;font-size:16px;outline:none}
-  input[type=text]:focus{border-color:var(--ayda);
-    box-shadow:0 0 0 6px var(--ring)}
-  button{background:var(--ayda);color:#fff;border:0;
-    border-radius:12px;padding:14px 18px;font-weight:700;cursor:pointer}
-  button:active{transform:translateY(1px)}
-  .hint{margin-top:8px;color:var(--muted);font-size:14px}
-  .err{margin-top:10px;color:#b00020;font-weight:600}
-  header{display:flex;gap:12px;align-items:center;padding:14px 18px;
-    background:#fff;border-bottom:1px solid var(--border)}
-  a.back{color:#fff;background:var(--ayda);padding:8px 12px;
-    border-radius:10px;text-decoration:none;font-weight:700}
-  .section{max-width:1100px;margin:24px auto;padding:0 16px}
-  iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:12px}
-  .btn{display:inline-block;background:var(--ayda);color:#fff;
-    text-decoration:none;padding:12px 16px;border-radius:12px;font-weight:700}
-  .rowwrap{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
-  .logo{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-  .logo-badge{width:36px;height:36px;border-radius:10px;background:var(--ayda)}
-  #jumpBtn{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);
-    background:var(--ayda);color:#fff;border:0;border-radius:999px;
-    padding:12px 16px;box-shadow:var(--shadow);
-    display:flex;align-items:center;gap:10px;font-weight:800;z-index:60}
-  #jumpBtn[hidden]{display:none}
-  .chev{font-size:18px;line-height:1;animation:bob 1.2s infinite}
-  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 400px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 12px;
+    width: 100%;
+    background: #234078;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* PDF */
+#pdfContent {
+    display: none;
+    width: 700px;
+    padding: 40px;
+    background: white;
+    text-align: left;
+    position: relative;
+}
+
+/* ÜST BAŞLIK */
+.header-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+/* LOGO (SOLA KAYDIRILDI) */
+.logo {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    padding-right: 30px;
+}
+
+.logo img {
+    height: 50px;
+}
+
+h3 {
+    margin-top: 20px;
+}
+
+p {
+    line-height: 1.6;
+    font-size: 14px;
+}
 </style>
 </head>
 
 <body>
 
-<main id="login" class="wrap">
-  <section class="card">
+<div class="container">
+    <h3>Bilgileri Gir</h3>
+
+    <input type="text" id="ad" placeholder="Ad Soyad">
+    <input type="date" id="tarih">
+    <input type="time" id="saat">
+
+    <select id="seviye">
+        <option>A1</option>
+        <option>A2</option>
+        <option>B1</option>
+        <option>B2</option>
+        <option>C1</option>
+    </select>
+
+    <button onclick="olustur()">PDF Oluştur</button>
+</div>
+
+<div id="pdfContent">
+
     <div class="logo">
-      <div class="logo-badge"></div>
-      <strong>AYDA Online Eğitim</strong>
+        <img src="logo.png">
     </div>
 
-    <h1>Lütfen sınıf kodunu giriniz</h1>
-    <p class="sub">Size verilen sınıf kodunu yazınız</p>
+    <div class="header-title">SINAVA GİRİŞ BELGESİ</div>
 
-    <label for="code">Sınıf kodu</label>
-    <div class="row">
-      <input id="code" type="text" autocomplete="off">
-      <button id="go">Giriş</button>
+    <p>Sayın <span id="pdfAd"></span>,</p>
+
+    <p>
+    Lingo Smart Yabancı Dil Kursları Sınav Merkezi’ni tercih ettiğiniz için teşekkür ederiz.
+    </p>
+
+    <p>
+    TELC sınav kaydınız başarıyla tamamlanmıştır. Aşağıda sınavınıza ilişkin detayları bulabilirsiniz.
+    </p>
+
+    <h3>KAYIT BİLGİLERİNİZ</h3>
+
+    <p><b>Aday Adı:</b> <span id="yAd"></span></p>
+    <p><b>Sınav Türü:</b> [TELC] <span id="ySeviye"></span></p>
+    <p><b>Sınav Tarihi ve Saati:</b> <span id="yTarih"></span> - <span id="ySaat"></span></p>
+    <p><b>Sınav Merkezi:</b> Lingo Smart Yabancı Dil Kursları</p>
+
+    <h3>SINAV GÜNÜ ÖNEMLİ HATIRLATMALAR</h3>
+
+    <p>
+    Sınavdan en az 30 dk önce merkezde olun. Geçerli kimlik getirin. 
+    Telefon, saat ve tüm elektronik cihazlar yasaktır.
+    </p>
+
+    <h3>SINAV KURALLARI (ÖZET)</h3>
+
+    <p>
+    Sınav belirtilen saatte başlar. A seviyeleri ~1,5 saat, B ~3 saat, C ~4 saat sürer.  
+    Bölümler arasında kısa mola verilir.  
+    Sözlü sınav bilgileri yazılı sınav sonrası açıklanır.  
+    Sınav salonuna yalnızca kimlik ve su ile girilebilir.  
+    Sınav öncesi fotoğraf çekimi yapılır.
+    </p>
+
+    <h3>SONUÇ BİLGİLENDİRME</h3>
+
+    <p>
+    Sınavlar Almanya telc merkezinde değerlendirilir.  
+    Sonuçlar genelde 15 iş günü içinde açıklanır ve e-posta ile bildirilir.
+    </p>
+
+    <p>Başarılar dileriz.</p>
+
+    <br><br>
+
+    <p>Lingo Smart Yabancı Dil Kursları</p>
+
+    <div style="margin-top:20px;">
+        <img src="telc.png" style="height:40px;">
+        <p>YETKİLİ SINAV MERKEZİ</p>
     </div>
 
-    <div class="hint">Örnek: A1Aralik25241225</div>
-    <div id="err" class="err" hidden>Geçersiz kod.</div>
-  </section>
-</main>
-
-<section id="class" hidden>
-  <header>
-    <a class="back" href="#" id="change">← Kodu Değiştir</a>
-    <strong id="head">AYDA · Sınıf</strong>
-  </header>
-
-  <main class="section">
-    <h1 id="titleClass">Ders Tekrarları</h1>
-    <p class="sub" id="desc"></p>
-
-    <section class="card">
-      <iframe id="yt"
-        allow="accelerometer; autoplay; clipboard-write;
-               encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen></iframe>
-
-      <div class="rowwrap">
-        <a class="btn" id="allBtn" target="_blank">Tüm derslere git (YouTube)</a>
-        <a class="btn" href="https://onurqlp.github.io/bibliothek/"
-           target="_blank">Online Kütüphane (AYDA)</a>
-      </div>
-
-      <p class="hint">
-        Video açılmazsa YouTube butonunu kullanabilirsiniz.
-      </p>
-    </section>
-  </main>
-</section>
-
-<button id="jumpBtn" hidden><span class="chev">↓</span> Derse git</button>
+</div>
 
 <script>
-  const trFold = s => s.toLocaleLowerCase('tr-TR')
-    .replace(/ı/g,'i').replace(/ö/g,'o').replace(/ü/g,'u')
-    .replace(/ş/g,'s').replace(/ç/g,'c').replace(/ğ/g,'g');
+function formatTarih(tarih) {
+    let t = new Date(tarih);
+    return t.toLocaleDateString("tr-TR");
+}
 
-  const classes = {
-    'a1kasim25141125': {
-      name: 'A1 Kasım 2025',
-      playlistId: 'PLQwhOGFlptnKQo0oP6i7l8gXD8trcTjuo',
-      playlistUrl: 'https://www.youtube.com/playlist?list=PLQwhOGFlptnKQo0oP6i7l8gXD8trcTjuo'
-    },
-    'a2kasim25171125': {
-      name: 'A2 Kasım 2025',
-      playlistId: 'PLQwhOGFlptnK2FkNjTa1ziOangyy_i50f',
-      playlistUrl: 'https://www.youtube.com/playlist?list=PLQwhOGFlptnK2FkNjTa1ziOangyy_i50f'
-    },
+function olustur() {
 
-    /* ✅ YENİ SINIF */
-    '241225': {
-      name: 'A1 Aralık 2025',
-      playlistId: 'PLQwhOGFlptnLdkvcoYRt9N6Qbret9aikN',
-      playlistUrl: 'https://youtube.com/playlist?list=PLQwhOGFlptnLdkvcoYRt9N6Qbret9aikN'
-    },
-    
-    /* ✅ YENİ SINIF */
-    '230126': {
-      name: 'Ocak A1–A2 CNC',
-      playlistId: 'PLQwhOGFlptnKEr24HrDmHIiakCuXX6ymU',
-      playlistUrl: 'https://www.youtube.com/playlist?list=PLQwhOGFlptnKEr24HrDmHIiakCuXX6ymU'
-    },
-    /* ✅ YENİ SINIF */
-    '060326': {
-      name: 'A2 Mart 2026',
-      playlistId: 'PLQwhOGFlptnKf8RxzHLd3n1Bm9QJsJRcj',
-      playlistUrl: 'https://www.youtube.com/playlist?list=PLQwhOGFlptnKf8RxzHLd3n1Bm9QJsJRcj'
-    },
-        /* ✅ YENİ SINIF */
-    '300126': {
-      name: 'A1 Ocak 2026 · Zeynep Hoca',
-      playlistId: 'PLQwhOGFlptnIdzy8kvYwGQ05LV1iQxoMO',
-      playlistUrl: 'https://www.youtube.com/playlist?list=PLQwhOGFlptnIdzy8kvYwGQ05LV1iQxoMO'
-    },
+    let ad = document.getElementById("ad").value;
+    let tarih = document.getElementById("tarih").value;
+    let saat = document.getElementById("saat").value;
+    let seviye = document.getElementById("seviye").value;
 
-    /* ✅ YENİ SINIF */
-    '290126': {
-      name: 'B1 Ocak 2026 · Onur Hoca',
-      playlistId: 'PLQwhOGFlptnI-jyaH6KDjK4J2ye5-MhXh',
-      playlistUrl: 'https://www.youtube.com/playlist?list=PLQwhOGFlptnI-jyaH6KDjK4J2ye5-MhXh'
-    },
-       /* ✅ YENİ SINIF */
-    '010326': {
-      name: 'B2 Mart 2026 · Zeynep Hoca',
-      playlistId: 'PLQwhOGFlptnLieyVPjWf_jjom7wk8sM7S',
-      playlistUrl: 'https://www.youtube.com/playlist?list=PLQwhOGFlptnLieyVPjWf_jjom7wk8sM7S'
-    },
-    /* ✅ YENİ SINIF */
-'240226': {
-  name: 'A1 Şubat 2026 · Sibel Hoca',
-  playlistId: 'PLQwhOGFlptnJ-vSNRbICk8ucc8Cw00N2O',
-  playlistUrl: 'https://www.youtube.com/playlist?list=PLQwhOGFlptnJ-vSNRbICk8ucc8Cw00N2O'
-},
-    /* ✅ YENİ SINIF */
-'160326': {
-  name: 'A2 Sınav Hazırlık SABAH 2026 · Süha Hoca',
-  playlistId: 'PLQwhOGFlptnKAiy8xdexwUno0ZmfTpzLS',
-  playlistUrl: 'https://youtube.com/playlist?list=PLQwhOGFlptnKAiy8xdexwUno0ZmfTpzLS'
-},
-    /* ✅ YENİ SINIF */
-'170326': {
-  name: 'A1 A2 2026 · Süha Hoca',
-  playlistId: 'PLQwhOGFlptnLqktYlzyITRj4pjpwRwNng',
-  playlistUrl: 'https://youtube.com/playlist?list=PLQwhOGFlptnLqktYlzyITRj4pjpwRwNng'
-},
-    /* ✅ YENİ SINIF */
-'180326': {
-  name: 'A2 Sınav Hazırlık AKŞAM 2026 · Süha Hoca',
-  playlistId: 'PLQwhOGFlptnI1tDHrN208iFU20Ckz4MXW',
-  playlistUrl: 'https://youtube.com/playlist?list=PLQwhOGFlptnI1tDHrN208iFU20Ckz4MXW'
-},
+    document.getElementById("pdfAd").innerText = ad;
+    document.getElementById("yAd").innerText = ad;
+    document.getElementById("ySeviye").innerText = seviye;
+    document.getElementById("yTarih").innerText = formatTarih(tarih);
+    document.getElementById("ySaat").innerText = saat;
 
-    /* ✅ YENİ SINIF */
-    '010226': {
-      name: 'A2 Ocak 2026 · Gizem Hoca',
-      playlistId: 'PLQwhOGFlptnLOwSCE8IpBt_2ey5_86wu5',
-      playlistUrl: 'https://www.youtube.com/playlist?list=PLQwhOGFlptnLOwSCE8IpBt_2ey5_86wu5'
-    }
-  };
+    let element = document.getElementById("pdfContent");
+    element.style.display = "block";
 
-  const $ = id => document.getElementById(id);
-  const login = $('login'), klass = $('class');
-  const codeInput = $('code'), err = $('err');
-  const head = $('head'), yt = $('yt'), allBtn = $('allBtn');
-  const desc = $('desc'), jumpBtn = $('jumpBtn');
+    html2pdf().set({
+        margin: 10,
+        filename: 'sinav-belgesi.pdf',
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).from(element).save();
 
-  function scrollToClass(){
-    klass.scrollIntoView({behavior:'smooth'});
-  }
-
-  function renderClass(key){
-    const c = classes[key];
-    if(!c){ err.hidden = false; return; }
-
-    head.textContent = `AYDA · ${c.name}`;
-    desc.textContent = `${c.name} için ders tekrarları`;
-    yt.src = `https://www.youtube.com/embed/videoseries?list=${c.playlistId}`;
-    allBtn.href = c.playlistUrl;
-
-    login.hidden = true;
-    klass.hidden = false;
-    jumpBtn.hidden = false;
-    scrollToClass();
-  }
-
-  $('go').onclick = () => {
-    const key = trFold(codeInput.value.trim());
-    if(classes[key]){ err.hidden = true; renderClass(key); }
-    else{ err.hidden = false; }
-  };
-
-  $('change').onclick = e => {
-    e.preventDefault();
-    klass.hidden = true;
-    login.hidden = false;
-    jumpBtn.hidden = true;
-    codeInput.focus();
-    window.scrollTo({top:0,behavior:'smooth'});
-  };
-
-  jumpBtn.onclick = scrollToClass;
+    setTimeout(() => {
+        element.style.display = "none";
+    }, 1000);
+}
 </script>
 
 </body>
